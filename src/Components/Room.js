@@ -23,7 +23,7 @@ export default function Room({ room }) {
     </article>
   );
 }
-
+// Prop Types just in case
 Room.propTypes = {
   room: PropTypes.shape({
     name: PropTypes.string.isRequired,
