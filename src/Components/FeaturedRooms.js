@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { roomContext, RoomContext } from '../context';
-
+import Loading from '../Components/Loading';
+import Room from '../Components/Room';
+import Title from './Title';
 //
 // Export
 export default class FeaturedRooms extends Component {
@@ -8,8 +10,18 @@ export default class FeaturedRooms extends Component {
   static contextType = RoomContext;
   // LA MAGIA: PODEMOS ACCEDER A LA DATA, SIN TENER QUE PASAR POR APP-HOME-ETC...
   render() {
-    const { featuredRooms: rooms } = this.context;
-    console.log(rooms);
-    return <div>from FeaturedRooms</div>;
+    let { loading, featuredRooms: rooms } = this.context;
+    rooms = rooms.map((room) => {
+      return <Room key={room.id} room={room}></Room>;
+    });
+
+    return (
+      <section className='featured-rooms'>
+        <Title title='featured rooms'></Title>
+        <div className='featured-rooms-center'>
+          {loading ? <Loading> </Loading> : rooms}
+        </div>
+      </section>
+    );
   }
 }
