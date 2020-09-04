@@ -1,5 +1,17 @@
 import React from 'react';
-
+import Hero from '../Components/Hero';
+import Banner from '../Components/Banner';
+import { Link } from 'react-router-dom';
+//
+// Main:
 export default function Error() {
-  return <div>Hello from ERROR</div>;
+  return (
+    <Hero>
+      <Banner title='404' subtitle='Page Not Found'>
+        <Link to='/' className='btn-primary'>
+          back to Home
+        </Link>
+      </Banner>
+    </Hero>
+  );
 }
