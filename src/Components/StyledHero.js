@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import defaultImg from '../images/room-1.jpeg';
+
 // Styled Components:
 // Son hechos en JS, podemos agregar Variables, etc....
 // LA MAGIA: Podemos pasar PROPS!!!!!!!!!!!!!!!
