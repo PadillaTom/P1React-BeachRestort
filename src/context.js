@@ -19,6 +19,15 @@ class RoomProvider extends Component {
     sortedRooms: [],
     featuredRooms: [],
     loading: true,
+    type: 'all',
+    capacity: 1,
+    price: 0,
+    minPrice: 0,
+    maxPrice: 0,
+    minSize: 0,
+    maxSize: 0,
+    breakfast: false,
+    pets: false,
   };
   //
   // Get Data:
@@ -29,11 +38,17 @@ class RoomProvider extends Component {
     // console.log(rooms); // Una vez escrita toda la funcion: Vemos el Array
     let featuredRooms = rooms.filter((room) => room.featured === true);
     // console.log(featuredRooms); // Comprobamos
+    // Establecemos los MAX:
+    let maxPrice = Math.max(...rooms.map((item) => item.price));
+    let maxSize = Math.max(...rooms.map((item) => item.size));
     this.setState({
       rooms,
       featuredRooms,
       sortedRooms: rooms,
       loading: false,
+      price: maxPrice,
+      maxPrice,
+      maxSize,
     });
   }
   // Format Data: Para facil acceso, Comenzamos destructurando la DATA
@@ -56,10 +71,52 @@ class RoomProvider extends Component {
     const room = tempRooms.find((room) => room.slug === slug); // alojaremos el ROOM que contenga el mismo SLUG
     return room;
   };
+  // Handle CHange for Filters:
+  handleChange = (e) => {
+    const target = e.target;
+    const value = e.type === 'checkbox' ? target.checked : target.value;
+    const name = e.target.name;
+    this.setState(
+      {
+        [name]: value,
+      },
+      this.filterRoomrs
+    );
+
+    // console.log(type, name, value); // Logramos ver la info de cada Elemento
+    // Que hacer:
+  };
+  // Filter Rooms :
+  filterRoomrs = () => {
+    let {
+      rooms,
+      type,
+      capacity,
+      price,
+      minSize,
+      maxSize,
+      breakfast,
+      pets,
+    } = this.state; // Primero Destructure el State
+    let tempRooms = [...rooms]; // Array temporal donde meteremos los ROOMS y la usaremos para filtrar
+    if (type !== 'all') {
+      // si NO ALL, devolveme un filtro de la TempRooms --> sean los type matched al selected
+      tempRooms = tempRooms.filter((room) => room.type === type);
+    }
+    this.setState({
+      sortedRooms: tempRooms, // Cambiamos el STATE por la TEMP ROOMS (solo el typed Matched)
+    });
+  };
   // Render:
   render() {
     return (
-      <RoomContext.Provider value={{ ...this.state, getRoom: this.getRoom }}>
+      <RoomContext.Provider
+        value={{
+          ...this.state,
+          getRoom: this.getRoom,
+          handleChange: this.handleChange,
+        }}
+      >
         {this.props.children}
       </RoomContext.Provider>
     );
