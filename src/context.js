@@ -74,7 +74,7 @@ class RoomProvider extends Component {
   // Handle CHange for Filters:
   handleChange = (e) => {
     const target = e.target;
-    const value = e.type === 'checkbox' ? target.checked : target.value;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = e.target.name;
     this.setState(
       {
@@ -98,11 +98,42 @@ class RoomProvider extends Component {
       breakfast,
       pets,
     } = this.state; // Primero Destructure el State
+    //
+    // All Rooms --->
     let tempRooms = [...rooms]; // Array temporal donde meteremos los ROOMS y la usaremos para filtrar
+    //
+    // Transform Values --->
+    capacity = parseInt(capacity);
+    price = parseInt(price);
+    //
+    // Filtered by Type --->
     if (type !== 'all') {
       // si NO ALL, devolveme un filtro de la TempRooms --> sean los type matched al selected
       tempRooms = tempRooms.filter((room) => room.type === type);
     }
+    //
+    // Filtered by Capacity --->
+    if (capacity !== 1) {
+      // Si no es 1: Devuelve la capacity Seleccionada y las mayores
+      tempRooms = tempRooms.filter((room) => room.capacity >= capacity);
+    }
+    // Filter by Price ---->
+    //          Mostrar las Rooms menores al PRICE dado en la barra
+    tempRooms = tempRooms.filter((room) => room.price <= price);
+    //
+    // Filter by Room Size ---->
+    tempRooms = tempRooms.filter(
+      (room) => room.size >= minSize && room.size <= maxSize
+    );
+    // Filter by Breakfast ---->
+    if (breakfast) {
+      tempRooms = tempRooms.filter((room) => room.breakfast === true);
+    }
+    // Filter by Pets ---->
+    if (pets) {
+      tempRooms = tempRooms.filter((room) => room.pets === true);
+    }
+    //
     this.setState({
       sortedRooms: tempRooms, // Cambiamos el STATE por la TEMP ROOMS (solo el typed Matched)
     });

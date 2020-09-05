@@ -2,6 +2,7 @@ import React from 'react';
 import { useContext } from 'react';
 import { RoomContext } from '../context';
 import Title from '../Components/Title';
+import { getQueriesForElement } from '@testing-library/react';
 
 // Function para obtener los TYPES de las ROOMS, SIN REPETIR --> Luego sera pasada
 // dentro del Filter TYPE (single, double, presidential, etc)
@@ -38,7 +39,8 @@ export default function RoomFilter({ rooms }) {
 
   // Add ALL a types, asi tenemos los types de rooms + All para filtrar:
   types = ['all', ...types]; // All + REST OF TYPES
-  // Mappeamos para obtener un JSX --> Creamos Option para cada TYPE
+  //
+  // Mappeamos para obtener un JSX --> Option para cada TYPE
   types = types.map((item, index) => {
     return (
       <option value={item} key={index}>
@@ -46,6 +48,17 @@ export default function RoomFilter({ rooms }) {
       </option>
     );
   });
+  // Map into JSX ---> Option Para People ::::
+  // EL VALUE DE OPTION ES STR, PASAMOS A NUMBER (EN CONTEXT)
+  let people = getUnique(rooms, 'capacity');
+  people = people.map((item, index) => {
+    return (
+      <option key={index} value={item}>
+        {item}
+      </option>
+    );
+  });
+
   //
   // Return
   return (
@@ -66,6 +79,82 @@ export default function RoomFilter({ rooms }) {
           </select>
         </div>
         {/* End Select Type */}
+        {/* Guest*/}
+        <div className='form-group'>
+          <label htmlFor='capacity'>Guests</label>
+          <select
+            name='capacity'
+            id='capacity'
+            value={capacity}
+            className='form-control'
+            onChange={handleChange}
+          >
+            {people}
+          </select>
+        </div>
+        {/* End Guest*/}
+        {/* Price */}
+        <div className='form-group'>
+          <label htmlFor='price'>Room Price ${price}</label>
+          <input
+            type='range'
+            name='price'
+            min={minPrice}
+            max={maxPrice}
+            id='price'
+            value={price}
+            onChange={handleChange}
+            className='form-control'
+          />
+        </div>
+        {/* End Price */}
+        {/* Size */}
+        <div className='form-group'>
+          <label htmlFor='size'>Room Size</label>
+          <div className='size-inputs'>
+            <input
+              type='number'
+              name='minSize'
+              id='size'
+              value={minSize}
+              onChange={handleChange}
+              className='size-input'
+            />
+            <input
+              type='number'
+              name='maxSize'
+              id='size'
+              value={maxSize}
+              onChange={handleChange}
+              className='size-input'
+            />
+          </div>
+        </div>
+        {/* End of Size */}
+        {/* Extras */}
+        <div className='form-group'>
+          <div className='single-extra'>
+            <input
+              type='checkbox'
+              name='breakfast'
+              id='breakfast'
+              checked={breakfast}
+              onChange={handleChange}
+            />
+            <label htmlFor='breakfast'>Breakfast</label>
+          </div>
+          <div className='single-extra'>
+            <input
+              type='checkbox'
+              name='pets'
+              id='pets'
+              checked={pets}
+              onChange={handleChange}
+            />
+            <label htmlFor='breakfast'>Pets</label>
+          </div>
+        </div>
+        {/* End Extras */}
       </form>
     </section>
   );
