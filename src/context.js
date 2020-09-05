@@ -50,11 +50,16 @@ class RoomProvider extends Component {
     });
     return tempItems;
   }
-
+  // Get Room: Usaremos el Slug
+  getRoom = (slug) => {
+    let tempRooms = [...this.state.rooms]; // Creamos un Array con Todo lo anterior
+    const room = tempRooms.find((room) => room.slug === slug); // alojaremos el ROOM que contenga el mismo SLUG
+    return room;
+  };
   // Render:
   render() {
     return (
-      <RoomContext.Provider value={{ ...this.state }}>
+      <RoomContext.Provider value={{ ...this.state, getRoom: this.getRoom }}>
         {this.props.children}
       </RoomContext.Provider>
     );
