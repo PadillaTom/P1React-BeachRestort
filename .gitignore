@@ -2,6 +2,7 @@
 
 # Contentful API KEYS:
 .Contentful.js
+
 # dependencies
 /node_modules
 /.pnp
