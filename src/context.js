@@ -68,6 +68,19 @@ class RoomProvider extends Component {
 
 // CONSUMER:
 const RoomConsumer = RoomContext.Consumer;
+//
+// HIGHER ORDER COMPONENT: Creamos una Function que envuelva directamente el COMPONENT que querramos
+// Nos ahorramos el Value =>
+// PERO HAY QUE CREAR TODO DE CERO
+export function withRoomConsumer(Component) {
+  return function ConsumerWrapper(props) {
+    return (
+      <RoomConsumer>
+        {(value) => <Component {...props} context={value} />}
+      </RoomConsumer>
+    );
+  };
+}
 
 // Export
 export { RoomProvider, RoomConsumer, RoomContext };

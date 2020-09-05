@@ -4,6 +4,7 @@ import Hero from '../Components/Hero';
 import Banner from '../Components/Banner';
 import { Link } from 'react-router-dom';
 import { RoomContext } from '../context';
+import StyledHero from '../Components/StyledHero';
 
 // Main:
 export default class SingleRoom extends Component {
@@ -48,15 +49,51 @@ export default class SingleRoom extends Component {
       pets,
       images,
     } = room;
-    // LUEGO QUEREMOS CAMBIAR LA IMGCG, NECESIAMOS STYLED COMPONENTS
+    // LUEGO QUEREMOS CAMBIAR LA IMGBG, NECESIAMOS STYLED COMPONENTS
+    // Destructure Images Array (para poder mostrarlas individualmente)
+    const [mainImg, ...defaultImg] = images; // Las pasaremos como Main y el resto como Default
     return (
-      <Hero hero='roomsHero'>
-        <Banner title={`${name} room`}>
-          <Link to='/rooms' className='btn-primary'>
-            Back to Rooms
-          </Link>
-        </Banner>
-      </Hero>
+      <React.Fragment>
+        <StyledHero img={mainImg || this.state.defaultBcg}>
+          <Banner title={`${name} room`}>
+            <Link to='/rooms' className='btn-primary'>
+              Back to Rooms
+            </Link>
+          </Banner>
+        </StyledHero>
+        <section className='single-room'>
+          <div className='single-room-images'>
+            {defaultImg.map((img, index) => {
+              return <img key={index} src={img} alt={name}></img>;
+            })}
+          </div>
+          <div className='single-room-info'>
+            <article className='descri'>
+              <h3>Details</h3>
+              <p>{description}</p>
+            </article>
+            <article className='info'>
+              <h3>info</h3>
+              <h6>price: ${price}</h6>
+              <h6>sizee: {size} SqFt</h6>
+              <h6>
+                max capacity:
+                {capacity > 1 ? `${capacity} people` : `${capacity} person`}
+              </h6>
+              <h6>{pets ? 'Pet Friendly' : null}</h6>
+              <h6>{breakfast && 'free Breakfast'}</h6>
+            </article>
+          </div>
+        </section>
+        <section className='room-extras'>
+          <h6>extras</h6>
+          <ul className='extras'>
+            {extras.map((item, index) => {
+              return <li key={index}> - {item}</li>;
+            })}
+          </ul>
+        </section>
+      </React.Fragment>
     );
   }
 }

@@ -4,6 +4,7 @@ import Banner from '../Components/Banner';
 import { Link } from 'react-router-dom';
 import Services from '../Components/Services';
 import FeaturedRooms from '../Components/FeaturedRooms';
+
 // Main:
 export default function Home() {
   return (
